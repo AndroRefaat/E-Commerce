@@ -1,15 +1,8 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
 import { Hash } from "src/common/security/Hash";
+import { GenderTypes, RoleTypes } from "src/common/types/types";
 
-export enum RoleTypes {
-    user = 'user',
-    admin = 'admin',
-}
-export enum GenderTypes {
-    male = 'male',
-    female = 'female',
-}
 
 @Schema({
     timestamps: true,
@@ -46,20 +39,20 @@ export class User {
     @Prop({ required: true })
     password: string;
 
-    @Prop({})
+    @Prop({ type: String, required: true })
     phone: string
 
-    @Prop({})
+    @Prop({ type: String, required: true })
     address: string
 
     @Prop({ type: Date })
     DOB: Date
 
-    @Prop({ type: Date })
-    confirmEmail: Date
+    @Prop({ type: Boolean })
+    confirmEmail: boolean
 
-    @Prop({})
-    confirmOTP: string
+    @Prop({ type: Boolean })
+    isDeleted: boolean
 
     @Prop({ type: String, enum: Object.values(RoleTypes), default: RoleTypes.user })
     role: RoleTypes
@@ -71,6 +64,7 @@ export class User {
 
 
 export type UserDocument = HydratedDocument<User>
+
 export const UserSchema = SchemaFactory.createForClass(User);
 UserSchema.pre('save', function (next) {
     if (this.isModified('password')) {

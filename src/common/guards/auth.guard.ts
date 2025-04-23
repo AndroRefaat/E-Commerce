@@ -7,7 +7,7 @@ import {
     UnauthorizedException
 } from "@nestjs/common";
 import { TokenService } from "../service/token";
-import { UserRepositoryService } from "src/DB/repository/user.repository";
+import { UserRepositoryService } from "src/DB/Repository/user.repository";
 import { UserDocument } from "src/DB/models/user.model";
 
 @Injectable()

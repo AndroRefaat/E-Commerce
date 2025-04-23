@@ -3,7 +3,7 @@ import { Model } from "mongoose";
 import { User, UserDocument } from 'src/DB/models/user.model';
 import { InjectModel } from "@nestjs/mongoose";
 import { CreateAccountDTO, LoginDTO } from "./dto/auth.dto";
-import { UserRepositoryService } from './../../DB/repository/user.repository';
+import { UserRepositoryService } from '../../DB/Repository/user.repository';
 import { sendEmail } from "src/common/email/sendEmail";
 import randomstring from "randomstring";
 import { TokenService } from "src/common/service/token";
