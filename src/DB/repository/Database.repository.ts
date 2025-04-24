@@ -7,8 +7,8 @@ import { Types } from "mongoose";
 export abstract class DatabaseRepository<TDocument> {
     protected constructor(protected readonly model: Model<TDocument>) { }
 
-    async findOne({ filter, populate }: { filter?: FilterQuery<TDocument>, populate?: PopulateOptions[] }): Promise<TDocument | null> {
-        return this.model.findOne(filter || {}).populate(populate || [])
+    async findOne(query: FilterQuery<TDocument>) {
+        return this.model.findOne(query)
     }
 
 
@@ -24,6 +24,9 @@ export abstract class DatabaseRepository<TDocument> {
         return this.model.findOneAndUpdate(query, date, { new: true, runValidators: true })
     }
 
+    async findOneAndDelete(query: FilterQuery<TDocument>): Promise<TDocument | null> {
+        return this.model.findOneAndDelete(query)
+    }
 
 
 

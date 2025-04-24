@@ -1,5 +1,6 @@
 import { MongooseModule, Prop, Schema, SchemaFactory, Virtual } from "@nestjs/mongoose";
 import { HydratedDocument } from "mongoose";
+import { encrypt } from "src/common/security/encryption";
 import { Hash } from "src/common/security/Hash";
 import { GenderTypes, RoleTypes } from "src/common/types/types";
 
@@ -48,13 +49,13 @@ export class User {
     @Prop({ type: Date })
     DOB: Date
 
-    @Prop({ type: Boolean })
+    @Prop({ type: Boolean, default: false })
     confirmEmail: boolean
 
     @Prop({ type: Boolean })
     isDeleted: boolean
 
-    @Prop({ type: String, enum: Object.values(RoleTypes), default: RoleTypes.user })
+    @Prop({ type: String, enum: RoleTypes, default: RoleTypes.user })
     role: RoleTypes
 
     @Prop({ type: String, enum: Object.values(GenderTypes), default: GenderTypes.male })
@@ -72,6 +73,14 @@ UserSchema.pre('save', function (next) {
     }
     next()
 })
+
+UserSchema.pre('save', function (next) {
+    if (this.isModified('phone')) {
+        this.phone = encrypt(this.phone)
+    }
+    next()
+})
+
 export const UserModel = MongooseModule.forFeature([
     { name: User.name, schema: UserSchema }
 ])

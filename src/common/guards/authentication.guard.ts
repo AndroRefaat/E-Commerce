@@ -14,7 +14,7 @@ import { UserDocument } from "src/DB/models/user.model";
 export class AuthGuard implements CanActivate {
     constructor(
         private tokenService: TokenService,
-        private readonly userRepositoryService: UserRepositoryService<UserDocument>
+        private readonly userRepositoryService: UserRepositoryService
     ) { }
     async canActivate(context: ExecutionContext): Promise<boolean> {
         try {
@@ -28,7 +28,7 @@ export class AuthGuard implements CanActivate {
                 secret: process.env.JWT_SECRET,
             });
             const user = await this.userRepositoryService.findOne({
-                filter: { _id: data._id },
+                _id: data._id,
             });
             if (!user) {
                 throw new NotFoundException('User not found');

@@ -9,7 +9,7 @@ import { OTPTypes } from 'src/common/types/types';
 
 interface OTPOptions {
     otp: string,
-    expiredAt: Date,
+    expiredAt?: Date,
     userId: Types.ObjectId,
     otpTypes: OTPTypes,
 }

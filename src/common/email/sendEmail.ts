@@ -13,7 +13,7 @@ export const sendEmail = async (data: SendMailOptions) => {
 
     try {
         const info = await transporter.sendMail({
-            from: `"test code 👻" <${process.env.EMAIL}>`,
+            from: `"E-Commerce 👻" <${process.env.EMAIL}>`,
             ...data
         });
 

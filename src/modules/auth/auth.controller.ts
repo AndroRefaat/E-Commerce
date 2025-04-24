@@ -1,11 +1,14 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Get, ParseIntPipe, Post, Req, UseGuards, ValidationPipe } from '@nestjs/common';
+import { Body, Controller, Get, ParseIntPipe, Patch, Post, Req, SetMetadata, UseGuards, ValidationPipe } from '@nestjs/common';
 import { AuthenticationService } from './auth.service';
-import { CreateAccountDTO, LoginDTO } from './dto/auth.dto';
+import { ConfirmEmailtDTO, CreateAccountDTO, LoginDTO } from './dto/auth.dto';
 import { PasswordPipe } from 'src/common/pipes/custom.pipe';
 import { registerSchema } from './auth.validation.schema';
-import { AuthGuard } from 'src/common/guards/auth.guard';
+import { AuthGuard } from 'src/common/guards/authentication.guard';
 import { Request } from 'express';
+import { RolesGuard } from 'src/common/guards/authorization.guard';
+import { RoleTypes } from 'src/common/types/types';
+import { Auth } from 'src/common/decorators/auth.decorator';
 
 
 @Controller('auth')
@@ -17,14 +20,20 @@ export class AuthenticationController {
         return this.authenticationService.signup(body)
     }
 
+    @Patch('confirmEmail')
+    confirmEmail(@Body() body: ConfirmEmailtDTO) {
+        return this.authenticationService.confirmEmail(body)
+    }
+
+
     @Post('login')
     login(@Body() body: LoginDTO) {
         return this.authenticationService.login(body)
     }
 
 
+    @Auth(RoleTypes.admin, RoleTypes.user)
     @Get('profile')
-    @UseGuards(AuthGuard)
     getProfile(@Req() req: Request) {
         const user = req['user'];
         return user;
