@@ -25,7 +25,7 @@ export abstract class DatabaseRepository<TDocument> {
     }
 
     async findOneAndDelete(query: FilterQuery<TDocument>): Promise<TDocument | null> {
-        return this.model.findOneAndDelete(query)
+        return this.model.findOneAndDelete(query, { new: true, runValidators: true })
     }
 
 

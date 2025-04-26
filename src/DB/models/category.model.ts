@@ -13,7 +13,7 @@ import { User } from "./user.model";
     }
 })
 export class Category {
-    @Prop({ type: String, required: true, minlength: 3, maxlength: 20, trim: true })
+    @Prop({ type: String, required: true, minlength: 3, maxlength: 20, trim: true, unique: true, lowerCase: true })
     name: string
 
     @Prop({

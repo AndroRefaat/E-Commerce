@@ -94,9 +94,11 @@ export class AuthenticationService {
             }
 
 
-            const generateToken = this.tokenService.generateToken({ email: email, _id: checkUser._id }, { expiresIn: process.env.JWT_EXPIRES_IN, secret: process.env.JWT_SECRET })
+            const access_token = this.tokenService.generateToken({ email: email, _id: checkUser._id }, { expiresIn: process.env.ACCESS_EXPIRES_IN, secret: process.env.JWT_SECRET })
 
-            return { message: "User logged in successfully", generateToken }
+            const refresh_token = this.tokenService.generateToken({ email: email, _id: checkUser._id }, { expiresIn: process.env.REFRESH_EXPIRES_IN, secret: process.env.JWT_SECRET })
+
+            return { message: "User logged in successfully", access_token, refresh_token }
 
         } catch (error) {
             throw new ConflictException('Error', error.message)
