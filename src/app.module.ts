@@ -9,6 +9,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { GlobalModule } from './global.module';
+import { CouponModule } from './modules/coupon/coupon.module';
 
 
 @Module({
@@ -18,7 +19,8 @@ import { GlobalModule } from './global.module';
     GlobalModule,
     AuthenticationModule,
     CategoryModule,
-    ProductModule
+    ProductModule,
+    CouponModule
   ],
 
   controllers: [AppController],
