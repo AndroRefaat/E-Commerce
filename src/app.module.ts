@@ -10,6 +10,7 @@ import { CategoryModule } from './modules/category/category.module';
 import { ProductModule } from './modules/product/product.module';
 import { GlobalModule } from './global.module';
 import { CouponModule } from './modules/coupon/coupon.module';
+import { CartModule } from './modules/cart/cart.module';
 
 
 @Module({
@@ -20,7 +21,8 @@ import { CouponModule } from './modules/coupon/coupon.module';
     AuthenticationModule,
     CategoryModule,
     ProductModule,
-    CouponModule
+    CouponModule,
+    CartModule
   ],
 
   controllers: [AppController],
