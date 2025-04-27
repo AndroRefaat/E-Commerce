@@ -80,7 +80,14 @@ export class CategoryService {
         return { message: 'category found successfully', category }
     }
 
+    async getAllCategories(user: UserDocument) {
 
+        const category = await this.categoryRepositoryService.findAll({ addedBy: user._id })
+        if (!category) throw new BadRequestException('Categories not found')
+
+
+        return { message: 'category found successfully', category }
+    }
 
 
 }

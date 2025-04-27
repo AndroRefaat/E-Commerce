@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { cloudinaryConfig } from "../cloudinary/cloudinary";
 import { UploadApiOptions } from "cloudinary";
 import { retry } from "rxjs";
+import { object } from "zod";
 
 
 @Injectable()

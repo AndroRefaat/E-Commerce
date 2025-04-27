@@ -68,4 +68,17 @@ export class CategoryController {
     ) {
         return this.categoryService.getCategory(id, user)
     }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+
+    @Get('getAllCategories')
+    @Auth(RoleTypes.admin)
+    getAllCategories(
+        @UserDecorator() user: UserDocument,
+    ) {
+        return this.categoryService.getAllCategories(user)
+    }
+
+
 }
