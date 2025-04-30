@@ -13,8 +13,8 @@ interface findOptions<TDocument> {
 export abstract class DatabaseRepository<TDocument> {
     protected constructor(protected readonly model: Model<TDocument>) { }
 
-    async findOne(query: FilterQuery<TDocument>) {
-        return this.model.findOne(query)
+    async findOne(query: FilterQuery<TDocument>, populate?: PopulateOptions[]): Promise<TDocument | null> {
+        return this.model.findOne(query).populate(populate || [])
     }
 
 
