@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, UploadedFiles } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UploadedFiles } from '@nestjs/common';
 import { CreateProductDto, QueryDTO, UpdateProductDto } from './dto/product.dto';
 import { FileUploadService } from 'src/common/service/fileUpload.service';
 import { ProductRepositoryService } from 'src/DB/Repository/product.repository';
@@ -7,12 +7,15 @@ import { CategoryRepositoryService } from 'src/DB/Repository/category.repository
 import { Types } from 'mongoose';
 import { ProductDocument } from 'src/DB/models/product.model';
 import { FilterQuery } from 'mongoose';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Cache } from 'cache-manager';
 @Injectable()
 export class ProductService {
     constructor(
         private readonly productRepositoryService: ProductRepositoryService,
         private readonly fileUploadService: FileUploadService,
-        private readonly categoryRepositoryService: CategoryRepositoryService
+        private readonly categoryRepositoryService: CategoryRepositoryService,
+        @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) { }
 
 
@@ -121,28 +124,37 @@ export class ProductService {
     }
 
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     async getAllProducts(query: QueryDTO) {
-        const { name, select, sort, page } = query
+        // const { name, select, sort, page } = query
 
-        let filterObj: FilterQuery<ProductDocument> = {}
-        if (name) {
-            filterObj = {
-                $or: [
-                    { name: { $regex: name, $options: 'i' } },
-                    { slug: { $regex: name, $options: 'i' } }
-                ]
-            }
+        // let filterObj: FilterQuery<ProductDocument> = {}
+        // if (name) {
+        //     filterObj = {
+        //         $or: [
+        //             { name: { $regex: name, $options: 'i' } },
+        //             { slug: { $regex: name, $options: 'i' } }
+        //         ]
+        //     }
+        // }
+
+        // const products = await this.productRepositoryService.find({
+        //     filter: filterObj,
+        //     // populate: [{ path: 'category', select: 'name' }],
+        //     sort,
+        //     select,
+        //     page
+        // })
+
+        // return { message: 'Products fetched successfully', products }
+        ////////////////with caching //////////////////////
+
+        const products = await this.cacheManager.get('list')
+        if (!products) {
+            const products = await this.productRepositoryService.find({})
+            await this.cacheManager.set('list', products, 2000)
         }
-
-        const products = await this.productRepositoryService.find({
-            filter: filterObj,
-            // populate: [{ path: 'category', select: 'name' }],
-            sort,
-            select,
-            page
-        })
-
         return { message: 'Products fetched successfully', products }
 
     }

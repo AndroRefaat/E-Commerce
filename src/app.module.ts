@@ -12,12 +12,24 @@ import { GlobalModule } from './global.module';
 import { CouponModule } from './modules/coupon/coupon.module';
 import { CartModule } from './modules/cart/cart.module';
 import { OrderModule } from './modules/order/order.module';
+import { CoreModule } from './core/core.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { GQLModule } from './graphql/graphql.module';
+
+
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({ envFilePath: resolve('./config/.env.dev'), isGlobal: true }),
     MongooseModule.forRoot(process.env.MONGO_URI!),
+    CoreModule,
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: './src/schema.gql',
+    }),
+    GQLModule,
     GlobalModule,
     AuthenticationModule,
     CategoryModule,

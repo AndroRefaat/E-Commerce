@@ -12,6 +12,7 @@ import { CouponModel } from 'src/DB/models/coupon.model';
 @Module({
   imports: [OrderModel, CartModel, CouponModel],
   controllers: [OrderController],
-  providers: [OrderService, OrderRepositoryService, CartRepositoryService, PaymentService, CouponRepositoryService]
+  providers: [OrderService, OrderRepositoryService, CartRepositoryService, PaymentService, CouponRepositoryService],
+  exports: [OrderService, OrderRepositoryService, CartRepositoryService, PaymentService, CouponRepositoryService],
 })
 export class OrderModule { }

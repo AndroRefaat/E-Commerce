@@ -1,0 +1,54 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type CartProductsObjectType {
+  _id: ID!
+  productId: ID!
+  quantity: Float!
+  finalPrice: Float!
+}
+
+type CartObjectType {
+  _id: ID!
+  products: [CartProductsObjectType!]!
+  subTotal: Float!
+}
+
+type OrderObject {
+  _id: ID!
+  cartId: CartObjectType!
+  address: String!
+  phone: String!
+  paymentMethod: PaymentMethodsTypes!
+  status: OrderStatusTypes!
+  totalPrice: Float!
+  paymentIntent: String
+}
+
+enum PaymentMethodsTypes {
+  cash
+  card
+}
+
+enum OrderStatusTypes {
+  pending
+  shipped
+  delivered
+  onWay
+  cancelled
+  rejected
+  refunded
+  paid
+  placed
+  cash
+}
+
+type Query {
+  """get all orders"""
+  listOrders(listOrderFilters: ListOrderFiltersDTO!): [OrderObject!]!
+}
+
+input ListOrderFiltersDTO {
+  status: OrderStatusTypes
+}
